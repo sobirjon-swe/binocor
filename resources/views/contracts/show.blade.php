@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Shartnoma — {{ $contract->customer->full_name }}</h2>
             <a href="{{ route('contracts.pdf', $contract) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
                 PDF yuklab olish
@@ -9,7 +9,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 grid grid-cols-2 gap-4">
                 <div><span class="text-gray-500 text-sm">Mijoz:</span> <a href="{{ route('customers.show', $contract->customer) }}" class="hover:underline">{{ $contract->customer->full_name }}</a></div>
                 <div><span class="text-gray-500 text-sm">Obyekt:</span> <a href="{{ route('properties.show', $contract->property) }}" class="hover:underline">{{ $contract->property->type }} — {{ $contract->property->project->name }}</a></div>
@@ -24,7 +24,8 @@
                     To'lov jadvali
                     <a href="{{ route('payments.create') }}" class="text-sm text-indigo-600 hover:underline">+ To'lov qo'shish</a>
                 </div>
-                <table class="min-w-full divide-y divide-gray-200">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Summa</th>
@@ -48,6 +49,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     </div>

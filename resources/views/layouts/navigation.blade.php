@@ -162,6 +162,37 @@
             @endif
         </div>
 
+        <!-- Responsive Notifications -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4 flex justify-between items-center">
+                <div class="font-medium text-base text-gray-800">
+                    Bildirishnomalar
+                    @if ($unreadNotifications->isNotEmpty())
+                        <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full align-middle">{{ $unreadNotifications->count() }}</span>
+                    @endif
+                </div>
+                @if ($unreadNotifications->isNotEmpty())
+                    <form method="POST" action="{{ route('notifications.read-all') }}">
+                        @csrf
+                        <button type="submit" class="text-xs text-indigo-600 hover:underline">Hammasini o'qish</button>
+                    </form>
+                @endif
+            </div>
+            <div class="mt-2 space-y-1">
+                @forelse ($unreadNotifications as $notification)
+                    <form method="POST" action="{{ route('notifications.read', $notification->id) }}">
+                        @csrf
+                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
+                            Kechikkan to'lov: <span class="font-medium">{{ $notification->data['customer_name'] }}</span>
+                            ({{ number_format($notification->data['amount'], 0, '.', ' ') }})
+                        </button>
+                    </form>
+                @empty
+                    <div class="px-4 py-1 text-sm text-gray-500">Yangi bildirishnomalar yo'q.</div>
+                @endforelse
+            </div>
+        </div>
+
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">

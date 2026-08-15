@@ -30,7 +30,7 @@
             <!-- Page Content -->
             <main>
                 @if (session('status'))
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-6">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
                         <div class="bg-green-100 border border-green-300 text-green-800 text-sm rounded-lg px-4 py-3">
                             {{ session('status') }}
                         </div>
