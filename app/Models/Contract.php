@@ -16,6 +16,8 @@ class Contract extends Model
         'property_id',
         'total_price',
         'payment_type',
+        'down_payment',
+        'installment_months',
         'signed_date',
         'status',
     ];
@@ -39,6 +41,6 @@ class Contract extends Model
 
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class)->orderBy('due_date');
     }
 }

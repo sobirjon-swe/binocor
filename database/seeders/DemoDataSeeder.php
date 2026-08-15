@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contract;
 use App\Models\Customer;
-use App\Models\Payment;
 use App\Models\Project;
 use App\Models\Property;
+use App\Services\ContractService;
 use Illuminate\Database\Seeder;
 
 class DemoDataSeeder extends Seeder
@@ -67,39 +66,23 @@ class DemoDataSeeder extends Seeder
             'lead_status' => 'interested',
         ]);
 
-        $contract = Contract::create([
+        // Shartnoma "installment" turida yaratiladi — bu PaymentScheduleService orqali
+        // boshlang'ich to'lov + oylik to'lovlarni avtomatik generatsiya qiladi.
+        $contract = app(ContractService::class)->create([
             'customer_id' => $customer->id,
             'property_id' => $soldProperty->id,
             'total_price' => $soldProperty->price,
             'payment_type' => 'installment',
+            'down_payment' => 150_000_000,
+            'installment_months' => 2,
             'signed_date' => '2025-06-15',
             'status' => 'active',
         ]);
 
-        $soldProperty->update(['status' => 'sold']);
-
-        Payment::create([
-            'contract_id' => $contract->id,
-            'amount' => 150_000_000,
-            'due_date' => '2025-06-15',
+        // Boshlang'ich to'lov allaqachon to'langan deb belgilaymiz.
+        $contract->payments()->oldest('due_date')->first()->update([
             'paid_date' => '2025-06-15',
             'status' => 'paid',
-        ]);
-
-        Payment::create([
-            'contract_id' => $contract->id,
-            'amount' => 150_000_000,
-            'due_date' => '2025-09-15',
-            'paid_date' => null,
-            'status' => 'pending',
-        ]);
-
-        Payment::create([
-            'contract_id' => $contract->id,
-            'amount' => 150_000_000,
-            'due_date' => '2025-12-15',
-            'paid_date' => null,
-            'status' => 'pending',
         ]);
     }
 }

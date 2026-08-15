@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class ContractService
 {
+    public function __construct(protected PaymentScheduleService $paymentScheduleService) {}
+
     public function create(array $data): Contract
     {
         return DB::transaction(function () use ($data) {
@@ -15,6 +17,7 @@ class ContractService
 
             if ($contract->status === 'active') {
                 $contract->property->update(['status' => 'sold']);
+                $this->paymentScheduleService->generate($contract);
             }
 
             return $contract;
