@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ConstructionStage;
 use App\Models\Customer;
 use App\Models\Project;
 use App\Models\Property;
@@ -83,6 +84,38 @@ class DemoDataSeeder extends Seeder
         $contract->payments()->oldest('due_date')->first()->update([
             'paid_date' => '2025-06-15',
             'status' => 'paid',
+        ]);
+
+        ConstructionStage::create([
+            'project_id' => $project->id,
+            'name' => 'Fundament',
+            'progress_percent' => 100,
+            'planned_date' => '2025-04-01',
+            'actual_date' => '2025-03-28',
+        ]);
+
+        ConstructionStage::create([
+            'project_id' => $project->id,
+            'name' => 'Devor',
+            'progress_percent' => 100,
+            'planned_date' => '2025-06-01',
+            'actual_date' => '2025-06-05',
+        ]);
+
+        ConstructionStage::create([
+            'project_id' => $project->id,
+            'name' => 'Tom',
+            'progress_percent' => 60,
+            'planned_date' => '2025-09-01',
+            'actual_date' => null,
+        ]);
+
+        ConstructionStage::create([
+            'project_id' => $project->id,
+            'name' => 'Ichki ishlar',
+            'progress_percent' => 10,
+            'planned_date' => '2025-12-01',
+            'actual_date' => null,
         ]);
     }
 }

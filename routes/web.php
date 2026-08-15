@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConstructionStageController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
@@ -26,6 +27,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager|foreman'])->group(function () {
+    Route::resource('construction-stages', ConstructionStageController::class);
+    Route::post('/construction-stages/{constructionStage}/photos', [ConstructionStageController::class, 'storePhoto'])->name('construction-stages.photos.store');
+    Route::delete('/construction-stages/{constructionStage}/photos/{photo}', [ConstructionStageController::class, 'destroyPhoto'])->name('construction-stages.photos.destroy');
 });
 
 Route::middleware('auth')->group(function () {

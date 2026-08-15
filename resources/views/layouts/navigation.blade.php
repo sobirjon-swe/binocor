@@ -30,6 +30,11 @@
                     <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
                         {{ __('To\'lovlar') }}
                     </x-nav-link>
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
+                        <x-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
+                            {{ __('Qurilish') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -140,6 +145,11 @@
             <x-responsive-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
                 {{ __('To\'lovlar') }}
             </x-responsive-nav-link>
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
+                <x-responsive-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
+                    {{ __('Qurilish') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
