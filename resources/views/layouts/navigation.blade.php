@@ -35,6 +35,11 @@
                             {{ __('Qurilish') }}
                         </x-nav-link>
                     @endif
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                            {{ __('Hisobotlar') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -148,6 +153,11 @@
             @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
                 <x-responsive-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
                     {{ __('Qurilish') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                    {{ __('Hisobotlar') }}
                 </x-responsive-nav-link>
             @endif
         </div>

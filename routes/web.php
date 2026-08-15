@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,10 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|foreman'])->group(fun
     Route::resource('construction-stages', ConstructionStageController::class);
     Route::post('/construction-stages/{constructionStage}/photos', [ConstructionStageController::class, 'storePhoto'])->name('construction-stages.photos.store');
     Route::delete('/construction-stages/{constructionStage}/photos/{photo}', [ConstructionStageController::class, 'destroyPhoto'])->name('construction-stages.photos.destroy');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function () {
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 Route::middleware('auth')->group(function () {
