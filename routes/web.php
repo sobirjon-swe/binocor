@@ -33,13 +33,13 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|accountant'])->group(
     Route::resource('payments', PaymentController::class)->except('show');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin|manager|foreman'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|manager|foreman|chief_engineer'])->group(function () {
     Route::resource('construction-stages', ConstructionStageController::class);
     Route::post('/construction-stages/{constructionStage}/photos', [ConstructionStageController::class, 'storePhoto'])->name('construction-stages.photos.store');
     Route::delete('/construction-stages/{constructionStage}/photos/{photo}', [ConstructionStageController::class, 'destroyPhoto'])->name('construction-stages.photos.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin|manager|sales_manager'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 

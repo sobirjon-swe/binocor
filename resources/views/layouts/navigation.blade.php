@@ -15,15 +15,17 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_manager', 'chief_engineer']))
                         <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
                             {{ __('Loyihalar') }}
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent']))
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent', 'sales_manager', 'chief_engineer']))
                         <x-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
                             {{ __('Obyektlar') }}
                         </x-nav-link>
+                    @endif
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent', 'sales_manager', 'lawyer']))
                         <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
                             {{ __('Mijozlar') }}
                         </x-nav-link>
@@ -36,12 +38,12 @@
                             {{ __('To\'lovlar') }}
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman', 'chief_engineer']))
                         <x-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
                             {{ __('Qurilish') }}
                         </x-nav-link>
                     @endif
-                    @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_manager']))
                         <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
                             {{ __('Hisobotlar') }}
                         </x-nav-link>
@@ -141,15 +143,17 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_manager', 'chief_engineer']))
                 <x-responsive-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
                     {{ __('Loyihalar') }}
                 </x-responsive-nav-link>
             @endif
-            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent']))
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent', 'sales_manager', 'chief_engineer']))
                 <x-responsive-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
                     {{ __('Obyektlar') }}
                 </x-responsive-nav-link>
+            @endif
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent', 'sales_manager', 'lawyer']))
                 <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
                     {{ __('Mijozlar') }}
                 </x-responsive-nav-link>
@@ -162,12 +166,12 @@
                     {{ __('To\'lovlar') }}
                 </x-responsive-nav-link>
             @endif
-            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman', 'chief_engineer']))
                 <x-responsive-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
                     {{ __('Qurilish') }}
                 </x-responsive-nav-link>
             @endif
-            @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_manager']))
                 <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
                     {{ __('Hisobotlar') }}
                 </x-responsive-nav-link>

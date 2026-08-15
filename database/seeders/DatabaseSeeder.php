@@ -47,6 +47,24 @@ class DatabaseSeeder extends Seeder
         ]);
         $foreman->assignRole('foreman');
 
+        $salesManager = User::factory()->create([
+            'name' => 'Sotuv bo\'limi boshlig\'i',
+            'email' => 'sales.manager@binocor.uz',
+        ]);
+        $salesManager->assignRole('sales_manager');
+
+        $lawyer = User::factory()->create([
+            'name' => 'Yurist',
+            'email' => 'lawyer@binocor.uz',
+        ]);
+        $lawyer->assignRole('lawyer');
+
+        $chiefEngineer = User::factory()->create([
+            'name' => 'Bosh muhandis',
+            'email' => 'chief.engineer@binocor.uz',
+        ]);
+        $chiefEngineer->assignRole('chief_engineer');
+
         $this->call(DemoDataSeeder::class);
     }
 }

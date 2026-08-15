@@ -2,9 +2,11 @@
     <x-slot name="header">
         <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Mijozlar</h2>
-            <a href="{{ route('customers.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                + Mijoz qo'shish
-            </a>
+            @can('create', App\Models\Customer::class)
+                <a href="{{ route('customers.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                    + Mijoz qo'shish
+                </a>
+            @endcan
         </div>
     </x-slot>
 
