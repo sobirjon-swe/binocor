@@ -34,12 +34,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $contract->payment_type }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $contract->status }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <a href="{{ route('contracts.edit', $contract) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
-                                    <form method="POST" action="{{ route('contracts.destroy', $contract) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline">O'chirish</button>
-                                    </form>
+                                    @can('update', $contract)
+                                        <a href="{{ route('contracts.edit', $contract) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
+                                    @endcan
+                                    @can('delete', $contract)
+                                        <form method="POST" action="{{ route('contracts.destroy', $contract) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:underline">O'chirish</button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

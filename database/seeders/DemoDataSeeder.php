@@ -6,6 +6,7 @@ use App\Models\ConstructionStage;
 use App\Models\Customer;
 use App\Models\Project;
 use App\Models\Property;
+use App\Models\User;
 use App\Services\ContractService;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,8 @@ class DemoDataSeeder extends Seeder
      */
     public function run(): void
     {
+        $salesAgent = User::where('email', 'sales@binocor.uz')->first();
+
         $project = Project::create([
             'name' => 'Bogishamol Residence',
             'address' => 'Toshkent sh., Chilonzor tumani',
@@ -58,6 +61,7 @@ class DemoDataSeeder extends Seeder
         ]);
 
         $customer = Customer::create([
+            'user_id' => $salesAgent?->id,
             'full_name' => 'Aziz Karimov',
             'phone' => '+998901234567',
             'passport_number' => 'AB1234567',
@@ -66,6 +70,7 @@ class DemoDataSeeder extends Seeder
         ]);
 
         $customer2 = Customer::create([
+            'user_id' => $salesAgent?->id,
             'full_name' => 'Dilnoza Yusupova',
             'phone' => '+998907654321',
             'lead_status' => 'contracted',
@@ -74,6 +79,7 @@ class DemoDataSeeder extends Seeder
         // Shartnoma "installment" turida yaratiladi — bu PaymentScheduleService orqali
         // boshlang'ich to'lov + oylik to'lovlarni avtomatik generatsiya qiladi.
         $contract1 = app(ContractService::class)->create([
+            'user_id' => $salesAgent?->id,
             'customer_id' => $customer->id,
             'property_id' => $property1->id,
             'total_price' => $property1->price,
@@ -91,6 +97,7 @@ class DemoDataSeeder extends Seeder
 
         // "Naqd" shartnoma — bitta to'liq to'lov avtomatik yaratiladi va darhol to'langan deb belgilanadi.
         $contract2 = app(ContractService::class)->create([
+            'user_id' => $salesAgent?->id,
             'customer_id' => $customer2->id,
             'property_id' => $property2->id,
             'total_price' => $property2->price,

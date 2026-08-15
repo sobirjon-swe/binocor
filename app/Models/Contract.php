@@ -12,6 +12,7 @@ class Contract extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'customer_id',
         'property_id',
         'total_price',
@@ -27,6 +28,11 @@ class Contract extends Model
         return [
             'signed_date' => 'date',
         ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function customer(): BelongsTo

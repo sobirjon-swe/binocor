@@ -9,21 +9,35 @@ use App\Models\Customer;
 use App\Models\Property;
 use App\Services\ContractService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class ContractController extends Controller
 {
     public function __construct(protected ContractService $contractService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $contracts = Contract::with('customer', 'property')->latest()->paginate(15);
+        $this->authorize('viewAny', Contract::class);
+
+        $contracts = Contract::with('customer', 'property')
+            ->when(
+                $request->user()->hasRole('sales_agent'),
+                fn ($query) => $query->where('user_id', $request->user()->id)
+            )
+            ->latest()
+            ->paginate(15);
 
         return view('contracts.index', compact('contracts'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $customers = Customer::orderBy('full_name')->get();
+        $this->authorize('create', Contract::class);
+
+        $customers = Customer::when(
+            $request->user()->hasRole('sales_agent'),
+            fn ($query) => $query->where('user_id', $request->user()->id)
+        )->orderBy('full_name')->get();
         $properties = Property::where('status', 'available')->with('project')->get();
 
         return view('contracts.create', compact('customers', 'properties'));
@@ -31,21 +45,30 @@ class ContractController extends Controller
 
     public function store(StoreContractRequest $request)
     {
-        $this->contractService->create($request->validated());
+        $this->authorize('create', Contract::class);
+
+        $this->contractService->create([...$request->validated(), 'user_id' => $request->user()->id]);
 
         return redirect()->route('contracts.index')->with('status', 'Shartnoma yaratildi.');
     }
 
     public function show(Contract $contract)
     {
+        $this->authorize('view', $contract);
+
         $contract->load('customer', 'property.project', 'payments');
 
         return view('contracts.show', compact('contract'));
     }
 
-    public function edit(Contract $contract)
+    public function edit(Contract $contract, Request $request)
     {
-        $customers = Customer::orderBy('full_name')->get();
+        $this->authorize('update', $contract);
+
+        $customers = Customer::when(
+            $request->user()->hasRole('sales_agent'),
+            fn ($query) => $query->where('user_id', $request->user()->id)
+        )->orderBy('full_name')->get();
         $properties = Property::where('status', 'available')
             ->orWhere('id', $contract->property_id)
             ->with('project')
@@ -56,6 +79,8 @@ class ContractController extends Controller
 
     public function update(UpdateContractRequest $request, Contract $contract)
     {
+        $this->authorize('update', $contract);
+
         $this->contractService->update($contract, $request->validated());
 
         return redirect()->route('contracts.index')->with('status', 'Shartnoma yangilandi.');
@@ -63,6 +88,8 @@ class ContractController extends Controller
 
     public function destroy(Contract $contract)
     {
+        $this->authorize('delete', $contract);
+
         $contract->delete();
 
         return redirect()->route('contracts.index')->with('status', 'Shartnoma o\'chirildi.');
@@ -70,6 +97,8 @@ class ContractController extends Controller
 
     public function pdf(Contract $contract)
     {
+        $this->authorize('view', $contract);
+
         $contract->load('customer', 'property.project', 'payments');
 
         $pdf = Pdf::loadView('contracts.pdf', compact('contract'))->setPaper('a4');

@@ -2,9 +2,11 @@
     <x-slot name="header">
         <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Obyektlar</h2>
-            <a href="{{ route('properties.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                + Obyekt qo'shish
-            </a>
+            @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                <a href="{{ route('properties.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                    + Obyekt qo'shish
+                </a>
+            @endif
         </div>
     </x-slot>
 
@@ -21,7 +23,9 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Qavat</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Narx</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Holat</th>
-                            <th class="px-6 py-3"></th>
+                            @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                                <th class="px-6 py-3"></th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -42,14 +46,16 @@
                                         'bg-gray-200 text-gray-800' => $property->status === 'sold',
                                     ])>{{ $property->status }}</span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <a href="{{ route('properties.edit', $property) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
-                                    <form method="POST" action="{{ route('properties.destroy', $property) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline">O'chirish</button>
-                                    </form>
-                                </td>
+                                @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                                    <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                                        <a href="{{ route('properties.edit', $property) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
+                                        <form method="POST" action="{{ route('properties.destroy', $property) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:underline">O'chirish</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>

@@ -24,10 +24,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('contracts', ContractController::class);
     Route::get('/contracts/{contract}/pdf', [ContractController::class, 'pdf'])->name('contracts.pdf');
-    Route::resource('payments', PaymentController::class)->except('show');
 
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager|accountant'])->group(function () {
+    Route::resource('payments', PaymentController::class)->except('show');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin|manager|foreman'])->group(function () {

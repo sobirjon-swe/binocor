@@ -30,12 +30,16 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $customer->phone }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $customer->lead_status }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <a href="{{ route('customers.edit', $customer) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
-                                    <form method="POST" action="{{ route('customers.destroy', $customer) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline">O'chirish</button>
-                                    </form>
+                                    @can('update', $customer)
+                                        <a href="{{ route('customers.edit', $customer) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
+                                    @endcan
+                                    @can('delete', $customer)
+                                        <form method="POST" action="{{ route('customers.destroy', $customer) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:underline">O'chirish</button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

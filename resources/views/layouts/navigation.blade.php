@@ -15,21 +15,27 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
-                        {{ __('Loyihalar') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
-                        {{ __('Obyektlar') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
-                        {{ __('Mijozlar') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.*')">
-                        {{ __('Shartnomalar') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
-                        {{ __('To\'lovlar') }}
-                    </x-nav-link>
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                        <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+                            {{ __('Loyihalar') }}
+                        </x-nav-link>
+                    @endif
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent']))
+                        <x-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
+                            {{ __('Obyektlar') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
+                            {{ __('Mijozlar') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.*')">
+                            {{ __('Shartnomalar') }}
+                        </x-nav-link>
+                    @endif
+                    @if (Auth::user()->hasAnyRole(['admin', 'manager', 'accountant']))
+                        <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
+                            {{ __('To\'lovlar') }}
+                        </x-nav-link>
+                    @endif
                     @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
                         <x-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
                             {{ __('Qurilish') }}
@@ -135,21 +141,27 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
-                {{ __('Loyihalar') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
-                {{ __('Obyektlar') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
-                {{ __('Mijozlar') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.*')">
-                {{ __('Shartnomalar') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
-                {{ __('To\'lovlar') }}
-            </x-responsive-nav-link>
+            @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                <x-responsive-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+                    {{ __('Loyihalar') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'sales_agent']))
+                <x-responsive-nav-link :href="route('properties.index')" :active="request()->routeIs('properties.*')">
+                    {{ __('Obyektlar') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
+                    {{ __('Mijozlar') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.*')">
+                    {{ __('Shartnomalar') }}
+                </x-responsive-nav-link>
+            @endif
+            @if (Auth::user()->hasAnyRole(['admin', 'manager', 'accountant']))
+                <x-responsive-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')">
+                    {{ __('To\'lovlar') }}
+                </x-responsive-nav-link>
+            @endif
             @if (Auth::user()->hasAnyRole(['admin', 'manager', 'foreman']))
                 <x-responsive-nav-link :href="route('construction-stages.index')" :active="request()->routeIs('construction-stages.*')">
                     {{ __('Qurilish') }}

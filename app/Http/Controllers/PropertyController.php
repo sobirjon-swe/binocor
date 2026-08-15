@@ -11,6 +11,8 @@ class PropertyController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Property::class);
+
         $properties = Property::with('project')->latest()->paginate(15);
 
         return view('properties.index', compact('properties'));
@@ -18,6 +20,8 @@ class PropertyController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Property::class);
+
         $projects = Project::orderBy('name')->get();
 
         return view('properties.create', compact('projects'));
@@ -25,6 +29,8 @@ class PropertyController extends Controller
 
     public function store(StorePropertyRequest $request)
     {
+        $this->authorize('create', Property::class);
+
         Property::create($request->validated());
 
         return redirect()->route('properties.index')->with('status', 'Obyekt yaratildi.');
@@ -32,6 +38,8 @@ class PropertyController extends Controller
 
     public function show(Property $property)
     {
+        $this->authorize('view', $property);
+
         $property->load('project', 'contracts.customer');
 
         return view('properties.show', compact('property'));
@@ -39,6 +47,8 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        $this->authorize('update', $property);
+
         $projects = Project::orderBy('name')->get();
 
         return view('properties.edit', compact('property', 'projects'));
@@ -46,6 +56,8 @@ class PropertyController extends Controller
 
     public function update(UpdatePropertyRequest $request, Property $property)
     {
+        $this->authorize('update', $property);
+
         $property->update($request->validated());
 
         return redirect()->route('properties.index')->with('status', 'Obyekt yangilandi.');
@@ -53,6 +65,8 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
+        $this->authorize('delete', $property);
+
         $property->delete();
 
         return redirect()->route('properties.index')->with('status', 'Obyekt o\'chirildi.');
