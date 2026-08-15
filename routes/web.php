@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -41,6 +42,10 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|foreman|chief_enginee
 
 Route::middleware(['auth', 'verified', 'role:admin|manager|sales_manager'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::resource('users', UserController::class)->except('show');
 });
 
 Route::middleware('auth')->group(function () {

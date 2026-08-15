@@ -111,6 +111,12 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        @if (Auth::user()->hasRole('admin'))
+                            <x-dropdown-link :href="route('users.index')">
+                                {{ __('Foydalanuvchilar') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -220,6 +226,12 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                @if (Auth::user()->hasRole('admin'))
+                    <x-responsive-nav-link :href="route('users.index')">
+                        {{ __('Foydalanuvchilar') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
