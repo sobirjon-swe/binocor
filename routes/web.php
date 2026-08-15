@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('properties', PropertyController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('contracts', ContractController::class);
+    Route::get('/contracts/{contract}/pdf', [ContractController::class, 'pdf'])->name('contracts.pdf');
     Route::resource('payments', PaymentController::class)->except('show');
 
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');

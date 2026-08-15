@@ -1,6 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Shartnoma — {{ $contract->customer->full_name }}</h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Shartnoma — {{ $contract->customer->full_name }}</h2>
+            <a href="{{ route('contracts.pdf', $contract) }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                PDF yuklab olish
+            </a>
+        </div>
     </x-slot>
 
     <div class="py-12">

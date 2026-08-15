@@ -8,6 +8,7 @@ use App\Models\Contract;
 use App\Models\Customer;
 use App\Models\Property;
 use App\Services\ContractService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ContractController extends Controller
 {
@@ -65,5 +66,14 @@ class ContractController extends Controller
         $contract->delete();
 
         return redirect()->route('contracts.index')->with('status', 'Shartnoma o\'chirildi.');
+    }
+
+    public function pdf(Contract $contract)
+    {
+        $contract->load('customer', 'property.project', 'payments');
+
+        $pdf = Pdf::loadView('contracts.pdf', compact('contract'))->setPaper('a4');
+
+        return $pdf->download("shartnoma-{$contract->id}.pdf");
     }
 }
