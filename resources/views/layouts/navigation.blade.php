@@ -33,6 +33,46 @@
                 </div>
             </div>
 
+            <!-- Notifications -->
+            <div class="hidden sm:flex sm:items-center">
+                @php $unreadNotifications = Auth::user()->unreadNotifications()->latest()->take(5)->get(); @endphp
+                <x-dropdown align="right" width="w-80">
+                    <x-slot name="trigger">
+                        <button class="relative inline-flex items-center p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            @if ($unreadNotifications->isNotEmpty())
+                                <span class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 rounded-full">{{ $unreadNotifications->count() }}</span>
+                            @endif
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <div class="px-4 py-2 flex justify-between items-center border-b">
+                            <span class="text-sm font-medium text-gray-700">Bildirishnomalar</span>
+                            @if ($unreadNotifications->isNotEmpty())
+                                <form method="POST" action="{{ route('notifications.read-all') }}">
+                                    @csrf
+                                    <button type="submit" class="text-xs text-indigo-600 hover:underline">Hammasini o'qilgan deb belgilash</button>
+                                </form>
+                            @endif
+                        </div>
+                        @forelse ($unreadNotifications as $notification)
+                            <form method="POST" action="{{ route('notifications.read', $notification->id) }}">
+                                @csrf
+                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Kechikkan to'lov: <span class="font-medium">{{ $notification->data['customer_name'] }}</span>
+                                    ({{ number_format($notification->data['amount'], 0, '.', ' ') }})
+                                </button>
+                            </form>
+                        @empty
+                            <div class="px-4 py-3 text-sm text-gray-500">Yangi bildirishnomalar yo'q.</div>
+                        @endforelse
+                    </x-slot>
+                </x-dropdown>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
