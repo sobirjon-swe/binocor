@@ -41,6 +41,19 @@ class PaymentTest extends TestCase
         $this->assertDatabaseHas('payments', ['contract_id' => $contract->id, 'amount' => 15_000_000]);
     }
 
+    public function test_payments_index_shows_gateway_links_for_unpaid_payments(): void
+    {
+        $accountant = User::factory()->create();
+        $accountant->assignRole('accountant');
+        Payment::factory()->create(['status' => 'pending']);
+
+        $response = $this->actingAs($accountant)->get(route('payments.index'));
+
+        $response->assertOk();
+        $response->assertSee('Payme havolasi');
+        $response->assertSee('Click havolasi');
+    }
+
     public function test_sales_agent_cannot_view_payments(): void
     {
         $agent = User::factory()->create();

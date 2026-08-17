@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentGatewayController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PropertyController;
@@ -53,5 +54,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Mijoz brauzerida ochiladigan onlayn to'lov havolalari — Binocor tizimiga
+// kirmagan mijoz uchun, shuning uchun auth talab qilinmaydi. Xavfsizlik
+// imzolangan URL (signed route) orqali ta'minlanadi.
+Route::get('/payments/{payment}/pay/{provider}', [PaymentGatewayController::class, 'redirect'])->name('payments.pay');
+Route::get('/payments/{payment}/pay-return', [PaymentGatewayController::class, 'returnPage'])->name('payments.pay.return');
+
+// To'lov tizimlari (Payme, Click) tomonidan chaqiriladigan webhook'lar.
+Route::post('/webhooks/payme', [PaymentGatewayController::class, 'payme'])->name('webhooks.payme');
+Route::post('/webhooks/click', [PaymentGatewayController::class, 'click'])->name('webhooks.click');
 
 require __DIR__.'/auth.php';

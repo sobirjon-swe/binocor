@@ -40,6 +40,10 @@
                                     ])>{{ $isOverdue ? 'kechikkan' : $payment->status }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
+                                    @if ($payment->status !== 'paid')
+                                        <a href="{{ URL::signedRoute('payments.pay', ['payment' => $payment, 'provider' => 'payme']) }}" target="_blank" class="text-teal-600 hover:underline">Payme havolasi</a>
+                                        <a href="{{ URL::signedRoute('payments.pay', ['payment' => $payment, 'provider' => 'click']) }}" target="_blank" class="text-sky-600 hover:underline">Click havolasi</a>
+                                    @endif
                                     <a href="{{ route('payments.edit', $payment) }}" class="text-indigo-600 hover:underline">Tahrirlash</a>
                                     <form method="POST" action="{{ route('payments.destroy', $payment) }}" class="inline" onsubmit="return confirm('O\'chirishni tasdiqlaysizmi?');">
                                         @csrf
