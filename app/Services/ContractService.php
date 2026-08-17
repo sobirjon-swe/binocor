@@ -4,15 +4,19 @@ namespace App\Services;
 
 use App\Models\Contract;
 use App\Models\Property;
+use App\Services\Sms\SmsService;
 use Illuminate\Support\Facades\DB;
 
 class ContractService
 {
-    public function __construct(protected PaymentScheduleService $paymentScheduleService) {}
+    public function __construct(
+        protected PaymentScheduleService $paymentScheduleService,
+        protected SmsService $sms,
+    ) {}
 
     public function create(array $data): Contract
     {
-        return DB::transaction(function () use ($data) {
+        $contract = DB::transaction(function () use ($data) {
             $contract = Contract::create($data);
 
             if ($contract->status === 'active') {
@@ -22,6 +26,15 @@ class ContractService
 
             return $contract;
         });
+
+        if ($contract->status === 'active') {
+            $this->sms->send(
+                $contract->customer->phone,
+                "Binocor: hurmatli {$contract->customer->full_name}, shartnomangiz muvaffaqiyatli imzolandi. To'lov jadvali bilan tizimda tanishishingiz mumkin."
+            );
+        }
+
+        return $contract;
     }
 
     public function update(Contract $contract, array $data): Contract

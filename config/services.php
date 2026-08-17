@@ -35,4 +35,25 @@ return [
         ],
     ],
 
+    'eskiz' => [
+        'base_url' => env('ESKIZ_BASE_URL', 'https://notify.eskiz.uz'),
+        'email' => env('ESKIZ_EMAIL'),
+        'password' => env('ESKIZ_PASSWORD'),
+        'from' => env('ESKIZ_FROM', '4546'),
+    ],
+
+    'payme' => [
+        'merchant_id' => env('PAYME_MERCHANT_ID'),
+        'key' => env('PAYME_KEY'),
+        'checkout_url' => env('PAYME_CHECKOUT_URL', 'https://checkout.paycom.uz'),
+        'test_mode' => env('PAYME_TEST_MODE', true),
+    ],
+
+    'click' => [
+        'service_id' => env('CLICK_SERVICE_ID'),
+        'merchant_id' => env('CLICK_MERCHANT_ID'),
+        'secret_key' => env('CLICK_SECRET_KEY'),
+        'checkout_url' => env('CLICK_CHECKOUT_URL', 'https://my.click.uz/services/pay'),
+    ],
+
 ];
