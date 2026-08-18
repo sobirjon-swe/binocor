@@ -99,3 +99,19 @@ Testlar muvaffaqiyatli o'tsa, `.github/workflows/deploy.yml` serverga SSH orqali
 | `DEPLOY_PATH` | Serverdagi loyiha manzili (ixtiyoriy, sukut bo'yicha `/var/www/binocor`) |
 
 Bular kiritilmaguncha `Deploy` workflow xato bilan tugaydi — bu zararsiz, faqat sozlash tugallanmaganini bildiradi.
+
+## Production'ga chiqarish
+
+Serverni sozlashda quyidagilar bajarilishi kerak (bir martalik, qo'lda):
+
+1. **`.env`** — `APP_ENV=production`, `APP_DEBUG=false`, yangi `APP_KEY` (`php artisan key:generate`), haqiqiy `APP_URL` (https).
+2. **Ma'lumotlar bazasi** — production'da SQLite emas, MySQL yoki PostgreSQL (`DB_CONNECTION`, `DB_HOST`, va h.k.).
+3. **Web server** — Nginx/Apache + PHP-FPM, SSL sertifikat (masalan Let's Encrypt).
+4. **Scheduler (cron)** — kechikkan to'lov bildirishnomasi shunga bog'liq, bo'lmasa ishlamaydi:
+   ```
+   * * * * * cd /var/www/binocor && php artisan schedule:run >> /dev/null 2>&1
+   ```
+5. **Email** — `MAIL_MAILER=log` o'rniga haqiqiy SMTP/API provider (aks holda email bildirishnomalar hech kimga bormaydi; SMS alohida ishlaydi).
+6. **Tashqi integratsiyalar** — yuqoridagi Eskiz/Payme/Click hisob ma'lumotlari.
+
+Shundan keyin `.github/workflows/deploy.yml` uchun secret/variable'larni kiritib, `main`ga push qilish yetarli — qolganini CI/CD o'zi bajaradi.
