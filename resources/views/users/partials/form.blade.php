@@ -12,7 +12,7 @@
 
 <div>
     <x-input-label for="password" :value="isset($user) ? 'Yangi parol (ixtiyoriy)' : 'Parol'" />
-    <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" {{ isset($user) ? '' : 'required' }} autocomplete="new-password" />
+    <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" :required="! isset($user)" autocomplete="new-password" />
     <x-input-error :messages="$errors->get('password')" class="mt-2" />
 </div>
 

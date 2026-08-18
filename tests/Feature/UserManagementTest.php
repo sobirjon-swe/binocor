@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UserManagementTest extends TestCase
@@ -53,6 +54,47 @@ class UserManagementTest extends TestCase
         $this->assertNotNull($created);
         $this->assertNotNull($created->email_verified_at);
         $this->assertTrue($created->hasRole('accountant'));
+    }
+
+    public function test_edit_page_renders_a_real_password_input_element(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $target = User::factory()->create();
+        $target->assignRole('accountant');
+
+        $response = $this->actingAs($admin)->get(route('users.edit', $target));
+
+        $response->assertOk();
+        // Guards against the <x-text-input> component tag failing to compile
+        // (e.g. a bare {{ }} expression breaking the tag) and being echoed
+        // back as literal, non-functional text instead of a real <input>.
+        $response->assertDontSee('<x-text-input', false);
+        $response->assertSee('name="password"', false);
+        $response->assertSee('name="password_confirmation"', false);
+    }
+
+    public function test_admin_can_change_another_users_role_and_password(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+        $target = User::factory()->create();
+        $target->assignRole('sales_agent');
+
+        $response = $this->actingAs($admin)->put(route('users.update', $target), [
+            'name' => $target->name,
+            'email' => $target->email,
+            'password' => 'newpassword123',
+            'password_confirmation' => 'newpassword123',
+            'roles' => ['sales_manager'],
+        ]);
+
+        $response->assertRedirect(route('users.index'));
+
+        $target->refresh();
+        $this->assertTrue($target->hasRole('sales_manager'));
+        $this->assertFalse($target->hasRole('sales_agent'));
+        $this->assertTrue(Hash::check('newpassword123', $target->password));
     }
 
     public function test_admin_cannot_delete_the_last_admin(): void
