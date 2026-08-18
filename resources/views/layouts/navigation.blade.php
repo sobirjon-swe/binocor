@@ -51,8 +51,16 @@
                 </div>
             </div>
 
-            <!-- Notifications -->
+            <!-- Search -->
             <div class="hidden sm:flex sm:items-center">
+                <form method="GET" action="{{ route('search') }}">
+                    <input type="search" name="q" value="{{ request('q') }}" placeholder="Qidirish..."
+                        class="w-48 rounded-md border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                </form>
+            </div>
+
+            <!-- Notifications -->
+            <div class="hidden sm:flex sm:items-center sm:ms-4">
                 @php $unreadNotifications = Auth::user()->unreadNotifications()->latest()->take(5)->get(); @endphp
                 <x-dropdown align="right" width="w-80">
                     <x-slot name="trigger">
@@ -145,6 +153,12 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        <div class="px-4 pt-3">
+            <form method="GET" action="{{ route('search') }}">
+                <input type="search" name="q" value="{{ request('q') }}" placeholder="Qidirish..."
+                    class="w-full rounded-md border-gray-300 text-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </form>
+        </div>
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
