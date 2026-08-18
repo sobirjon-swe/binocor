@@ -131,6 +131,10 @@
                             </x-dropdown-link>
                         @endif
 
+                        <div class="border-t border-gray-100 mt-1 pt-2 px-4">
+                            <x-language-switcher />
+                        </div>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -258,6 +262,10 @@
                         {{ __('Faoliyat tarixi') }}
                     </x-responsive-nav-link>
                 @endif
+
+                <div class="px-4 py-2">
+                    <x-language-switcher />
+                </div>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
