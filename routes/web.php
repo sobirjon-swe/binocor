@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/properties/{property}/photos', [PropertyController::class, 'storePhoto'])->name('properties.photos.store');
     Route::delete('/properties/{property}/photos/{photo}', [PropertyController::class, 'destroyPhoto'])->name('properties.photos.destroy');
     Route::resource('customers', CustomerController::class);
+    Route::get('/contracts/export', [ContractController::class, 'export'])->name('contracts.export');
     Route::resource('contracts', ContractController::class);
     Route::get('/contracts/{contract}/pdf', [ContractController::class, 'pdf'])->name('contracts.pdf');
 
@@ -37,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', 'role:admin|manager|accountant'])->group(function () {
+    Route::get('/payments/export', [PaymentController::class, 'export'])->name('payments.export');
     Route::resource('payments', PaymentController::class)->except('show');
 });
 
@@ -48,6 +50,7 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|foreman|chief_enginee
 
 Route::middleware(['auth', 'verified', 'role:admin|manager|sales_manager'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/top-projects/export', [ReportController::class, 'exportTopProjects'])->name('reports.top-projects.export');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {

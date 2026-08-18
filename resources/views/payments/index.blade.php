@@ -2,9 +2,14 @@
     <x-slot name="header">
         <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">To'lovlar</h2>
-            <a href="{{ route('payments.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                + To'lov qo'shish
-            </a>
+            <div class="flex gap-2">
+                <a href="{{ route('payments.export') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50">
+                    Excel'ga eksport
+                </a>
+                <a href="{{ route('payments.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                    + To'lov qo'shish
+                </a>
+            </div>
         </div>
     </x-slot>
 

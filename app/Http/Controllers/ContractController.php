@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ContractsExport;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Requests\UpdateContractRequest;
 use App\Models\Contract;
@@ -10,10 +11,18 @@ use App\Models\Property;
 use App\Services\ContractService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContractController extends Controller
 {
     public function __construct(protected ContractService $contractService) {}
+
+    public function export(Request $request)
+    {
+        $this->authorize('viewAny', Contract::class);
+
+        return Excel::download(new ContractsExport($request->user()), 'shartnomalar.xlsx');
+    }
 
     public function index(Request $request)
     {

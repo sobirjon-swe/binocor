@@ -30,7 +30,10 @@
                 </div>
 
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 lg:col-span-2">
-                    <h3 class="font-medium text-gray-700 mb-4">Loyihalar bo'yicha eng ko'p sotuv</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-medium text-gray-700">Loyihalar bo'yicha eng ko'p sotuv</h3>
+                        <a href="{{ route('reports.top-projects.export') }}" class="text-xs text-indigo-600 hover:underline uppercase tracking-widest">Excel'ga eksport</a>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                         <thead>

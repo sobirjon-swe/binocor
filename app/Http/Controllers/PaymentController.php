@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PaymentsExport;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Contract;
 use App\Models\Payment;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PaymentController extends Controller
 {
@@ -14,6 +16,11 @@ class PaymentController extends Controller
         $payments = Payment::with('contract.customer', 'contract.property')->latest('due_date')->paginate(15);
 
         return view('payments.index', compact('payments'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new PaymentsExport, 'tolovlar.xlsx');
     }
 
     public function create()
