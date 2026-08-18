@@ -17,6 +17,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
+                            <th class="px-6 py-3"></th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Loyiha</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Turi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Maydon</th>
@@ -31,6 +32,13 @@
                     <tbody class="divide-y divide-gray-200">
                         @forelse ($properties as $property)
                             <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if ($property->primaryPhoto)
+                                        <img src="{{ $property->primaryPhoto->url }}" alt="" class="w-12 h-12 object-cover rounded-md border border-gray-200">
+                                    @else
+                                        <div class="w-12 h-12 rounded-md bg-gray-100 border border-gray-200"></div>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('properties.show', $property) }}" class="text-gray-900 font-medium hover:underline">{{ $property->project->name }}</a>
                                 </td>
@@ -59,7 +67,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">Obyektlar topilmadi.</td>
+                                <td colspan="8" class="px-6 py-4 text-center text-gray-500">Obyektlar topilmadi.</td>
                             </tr>
                         @endforelse
                     </tbody>

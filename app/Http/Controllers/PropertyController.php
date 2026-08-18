@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePropertyPhotoRequest;
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Project;
 use App\Models\Property;
+use App\Models\PropertyPhoto;
+use Illuminate\Support\Facades\Storage;
 
 class PropertyController extends Controller
 {
@@ -13,7 +16,7 @@ class PropertyController extends Controller
     {
         $this->authorize('viewAny', Property::class);
 
-        $properties = Property::with('project')->latest()->paginate(15);
+        $properties = Property::with('project', 'primaryPhoto')->latest()->paginate(15);
 
         return view('properties.index', compact('properties'));
     }
@@ -40,7 +43,7 @@ class PropertyController extends Controller
     {
         $this->authorize('view', $property);
 
-        $property->load('project', 'contracts.customer');
+        $property->load('project', 'contracts.customer', 'photos.user');
 
         return view('properties.show', compact('property'));
     }
@@ -70,5 +73,42 @@ class PropertyController extends Controller
         $property->delete();
 
         return redirect()->route('properties.index')->with('status', 'Obyekt o\'chirildi.');
+    }
+
+    public function storePhoto(StorePropertyPhotoRequest $request, Property $property)
+    {
+        $this->authorize('update', $property);
+
+        $path = $request->file('photo')->store('properties', 'public');
+        $isPrimary = $request->boolean('is_primary') || ! $property->photos()->exists();
+
+        if ($isPrimary) {
+            $property->photos()->update(['is_primary' => false]);
+        }
+
+        $property->photos()->create([
+            'user_id' => $request->user()->id,
+            'path' => $path,
+            'is_primary' => $isPrimary,
+        ]);
+
+        return redirect()->route('properties.show', $property)->with('status', 'Rasm qo\'shildi.');
+    }
+
+    public function destroyPhoto(Property $property, PropertyPhoto $photo)
+    {
+        $this->authorize('update', $property);
+
+        abort_unless($photo->property_id === $property->id, 404);
+
+        Storage::disk('public')->delete($photo->path);
+        $wasPrimary = $photo->is_primary;
+        $photo->delete();
+
+        if ($wasPrimary) {
+            $property->photos()->oldest('id')->first()?->update(['is_primary' => true]);
+        }
+
+        return redirect()->route('properties.show', $property)->with('status', 'Rasm o\'chirildi.');
     }
 }

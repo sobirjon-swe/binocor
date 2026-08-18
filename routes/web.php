@@ -23,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('projects', ProjectController::class);
     Route::resource('properties', PropertyController::class);
+    Route::post('/properties/{property}/photos', [PropertyController::class, 'storePhoto'])->name('properties.photos.store');
+    Route::delete('/properties/{property}/photos/{photo}', [PropertyController::class, 'destroyPhoto'])->name('properties.photos.destroy');
     Route::resource('customers', CustomerController::class);
     Route::resource('contracts', ContractController::class);
     Route::get('/contracts/{contract}/pdf', [ContractController::class, 'pdf'])->name('contracts.pdf');
