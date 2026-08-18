@@ -8,12 +8,14 @@ Ko'p qurilish kompaniyalari hozir Excel jadvallar, WhatsApp guruhlar va qog'oz h
 
 ## Modullar
 
-- **Loyihalar va obyektlar** — qurilish loyihalari va ularning tarkibidagi obyektlar (kvartira/ofis/uchastka) katalogi
+- **Loyihalar va obyektlar** — qurilish loyihalari va ularning tarkibidagi obyektlar (kvartira/ofis/uchastka) katalogi, har biri uchun rasm galereyasi bilan
 - **Mijozlar** — lead bosqichlaridan (qiziqdi → ko'rdi → band qildi → shartnoma tuzdi) tortib to shartnomagacha
 - **Shartnomalar** — naqd yoki rassrochka, avtomatik to'lov jadvali generatsiyasi bilan
 - **To'lovlar** — to'lov holati kuzatuvi, kechikkan to'lovlar uchun avtomatik email/SMS bildirishnoma, Payme va Click orqali onlayn to'lov havolasi
 - **Qurilish jarayoni** — bosqichlar, progress foizi, foto hisobotlar
-- **Hisobotlar** — oylik sotuv/to'lov dinamikasi, obyektlar holati taqsimoti
+- **Hisobotlar** — oylik sotuv/to'lov dinamikasi, obyektlar holati taqsimoti, Excel'ga eksport
+- **Global qidiruv** — mijoz, shartnoma va obyektni ism/telefon/loyiha nomi bo'yicha bitta joydan topish
+- **Faoliyat tarixi** — shartnoma va to'lov narxi/holati o'zgarishlarini kim va qachon qilgani (admin/menejer uchun)
 
 ## Rollar
 
