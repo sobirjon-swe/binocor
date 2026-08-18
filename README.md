@@ -76,3 +76,26 @@ Demo login ma'lumotlari (barchasi `password` paroli bilan):
 ```bash
 php artisan test
 ```
+
+## CI/CD
+
+`main` branchga har push va har pull request'da `.github/workflows/tests.yml` avtomatik testlarni ishga tushiradi (frontend build qilingandan so'ng, PHP 8.3/8.4/8.5 uchun).
+
+Testlar muvaffaqiyatli o'tsa, `.github/workflows/deploy.yml` serverga SSH orqali deploy qiladi (`git pull` → `composer`/`npm` → `migrate` → `cache`). Ishga tushirish uchun repo sozlamalarida quyidagilarni kiritish kerak:
+
+**Settings → Secrets and variables → Actions → Secrets:**
+
+| Nomi | Tavsif |
+|---|---|
+| `DEPLOY_HOST` | Server IP yoki domeni |
+| `DEPLOY_USER` | SSH foydalanuvchisi |
+| `DEPLOY_SSH_KEY` | SSH maxfiy kaliti (deploy foydalanuvchisining) |
+| `DEPLOY_PORT` | SSH porti (ixtiyoriy, sukut bo'yicha 22) |
+
+**Settings → Secrets and variables → Actions → Variables:**
+
+| Nomi | Tavsif |
+|---|---|
+| `DEPLOY_PATH` | Serverdagi loyiha manzili (ixtiyoriy, sukut bo'yicha `/var/www/binocor`) |
+
+Bular kiritilmaguncha `Deploy` workflow xato bilan tugaydi — bu zararsiz, faqat sozlash tugallanmaganini bildiradi.
