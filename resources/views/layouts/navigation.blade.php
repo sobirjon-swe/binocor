@@ -125,6 +125,12 @@
                             </x-dropdown-link>
                         @endif
 
+                        @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                            <x-dropdown-link :href="route('activity-log.index')">
+                                {{ __('Faoliyat tarixi') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -244,6 +250,12 @@
                 @if (Auth::user()->hasRole('admin'))
                     <x-responsive-nav-link :href="route('users.index')">
                         {{ __('Foydalanuvchilar') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                @if (Auth::user()->hasAnyRole(['admin', 'manager']))
+                    <x-responsive-nav-link :href="route('activity-log.index')">
+                        {{ __('Faoliyat tarixi') }}
                     </x-responsive-nav-link>
                 @endif
 

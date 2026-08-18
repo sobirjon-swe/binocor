@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\ConstructionStageController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
@@ -51,6 +52,10 @@ Route::middleware(['auth', 'verified', 'role:admin|manager|sales_manager'])->gro
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class)->except('show');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function () {
+    Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity-log.index');
 });
 
 Route::middleware('auth')->group(function () {
